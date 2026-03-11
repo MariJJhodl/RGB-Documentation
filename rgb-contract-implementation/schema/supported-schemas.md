@@ -58,7 +58,7 @@ The following operations are supported for the asset:
 
 ## IFA (Inflatable Fungible Asset)
 
-This schema defines a non-inflatable fungible asset, involving the following data:
+This schema defines an inflatable fungible asset, involving the following data:
 - AssetSpec: groups basic asset information, namely:
     - Ticker: short identifier of the asset, to be displayed on wallets and exchanges
     (e.g.: BTC, USDT, ...). Note that there is no guarantee of uniqueness
@@ -80,13 +80,9 @@ This schema defines a non-inflatable fungible asset, involving the following dat
 
 
 Additionally to the owned state representing the asset's allocation, an IFA asset can
-optionally define two rights:
+optionally define rights:
 - Inflation: represents the right to inflate the asset by a certain amount, using this
     right will reduce the remaining inflation amount
-- Replace: represents the right to "stamp" an allocation, so that wallets trusting the
-    replace right owners can avoid validating the history from this operation back to
-    genesis. It's always possible, provided that the CSV data is available, to perform
-    full trustless validation
 
 The following operations are supported for the asset:
 - Transfer: send some amount of assets to a number of destinations (optionally including
@@ -95,10 +91,6 @@ The following operations are supported for the asset:
 - Inflate: use an inflation right to issue a certain amount of assets in circulation,
     which can be optionally split into more than one allocation. The remaining inflation
     right (if any) can also optionally be split into more than one allocation
-- Replace: use a replace right to certify that the history of a set of allocations back
-    to genesis is valid. This "stamp" can be used by wallets to skip part of the
-    consignment validation, provided that they trust the issuer (or their delegates for
-    replace operations)
 - Burn: burn a number of (asset or right) allocations by adding them as input to a
     transition with no outputs. It allows to prove to a third party that those
     allocations no longer exist, e.g. as part of a protocol with wider scope
