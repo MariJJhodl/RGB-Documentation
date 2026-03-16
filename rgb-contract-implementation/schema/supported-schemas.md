@@ -77,12 +77,19 @@ This schema defines an inflatable fungible asset, involving the following data:
 - RejectListUrl: an optional URL where the issuer can provide a list of operations that
     should be considered invalid. This cannot be enforced by the issuer due to the nature
     of client side validation, and wallets are free to ignore it
-
+- LinkedFromContract, LinkedToContract: optional `ContractId`s that should be considered
+    equivalent economic objects as the current asset, may be used by the issuer to update
+    an asset to a different schema or a different version of the IFA schema. The contract link
+    from `A` to `B` should only be considered valid if `A.LinkedToContract` is `B`
+    AND `B.LinkedFromContract` is `A`; this guarantees that the issuers of both assets
+    are willing to consider them the same economic structure
 
 Additionally to the owned state representing the asset's allocation, an IFA asset can
 optionally define rights:
-- Inflation: represents the right to inflate the asset by a certain amount, using this
-    right will reduce the remaining inflatable amount
+- Inflation: allows its owner to inflate the asset by a certain amount, using this right
+    will reduce the remaining inflatable amount
+- Link: allows its owner to link the current asset to another one, by setting a value to
+    the `LinkedToContract` global state
 
 The following operations are supported for the asset:
 - Transfer: send some amount of assets to a number of destinations (optionally including
@@ -94,11 +101,14 @@ The following operations are supported for the asset:
 - Burn: burn a number of (asset or right) allocations by adding them as input to a
     transition with no outputs. It allows to prove to a third party that those
     allocations no longer exist, e.g. as part of a protocol with wider scope
+- Link: Link this asset to another linkable one. This operation can be done at most once
+    in the life of a contract, hence the corresponding right is lost after this operation
+    is performed
 
 ## PFA (Permissioned Fungible Asset)
 
 This schema defines a permissioned, non-inflatable fungible asset, in which the issuer
-needs to explicitly authrize every transfer; e.g. it may be used to represent company shares,
+needs to explicitly authorize every transfer; e.g. it may be used to represent company shares,
 for which there are legal constraints on the potential owners. It involves the following data:
 - AssetSpec: groups basic asset information, namely:
     - Ticker: short identifier of the asset, to be displayed on wallets and exchanges.
