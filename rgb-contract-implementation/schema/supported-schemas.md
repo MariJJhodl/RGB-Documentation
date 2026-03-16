@@ -82,7 +82,7 @@ This schema defines an inflatable fungible asset, involving the following data:
 Additionally to the owned state representing the asset's allocation, an IFA asset can
 optionally define rights:
 - Inflation: represents the right to inflate the asset by a certain amount, using this
-    right will reduce the remaining inflation amount
+    right will reduce the remaining inflatable amount
 
 The following operations are supported for the asset:
 - Transfer: send some amount of assets to a number of destinations (optionally including
